@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Abdul's Bootstrap 5 portfolio: data engineering projects, JavaScript demos and an Open-Meteo forecast explorer.">
+  <title>Abdul | Systems Lab · Bootstrap Edition</title>
+  <!-- Bootstrap 5 provides the grid, responsive navbar, cards, forms and utilities. -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <style>
+    /* A small design layer on top of Bootstrap, not a replacement for its grid. */
+    :root { --accent:#445bd2; --accent-hover:#3147b8; --sky:#ddedff; --paper:#f5f6fa; --ink:#182236; --muted:#65718a; --stroke:#dfe4ee; --surface:#fff; --surface-alt:#eff2fa; --hero:#111e3d; }
+    [data-bs-theme="dark"] { --accent:#92a5ff; --accent-hover:#b8c4ff; --sky:#273251; --paper:#101726; --ink:#f2f5ff; --muted:#aab6d0; --stroke:#33405a; --surface:#192338; --surface-alt:#222f49; --hero:#0b1222; }
+    html { scroll-behavior:smooth; scroll-padding-top:86px; }
+    body { background:var(--paper); color:var(--ink); font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.65; }
+    [hidden] { display:none!important; }
+    :focus-visible { outline:3px solid #ffb268; outline-offset:3px; }
+    .skip-link { position:absolute; top:-100px; left:12px; z-index:1100; padding:.6rem .9rem; background:var(--ink); color:var(--paper); }
+    .skip-link:focus { top:10px; }
+    .site-nav { background:var(--surface); border-bottom:1px solid var(--stroke); }
+    .brand-mark { display:inline-grid; place-items:center; width:39px; height:39px; border-radius:12px; background:var(--accent); color:#fff; font-weight:800; letter-spacing:-.08em; }
+    .navbar-brand { color:var(--ink)!important; letter-spacing:-.04em; }
+    .nav-link { color:var(--muted)!important; font-size:.91rem; font-weight:650; }
+    .nav-link:hover, .nav-link:focus { color:var(--accent)!important; }
+    .theme-btn { border:1px solid var(--stroke); color:var(--ink); background:var(--surface-alt); white-space:nowrap; }
+    .theme-btn:hover { border-color:var(--accent); color:var(--ink); }
+    .eyebrow { font-size:.76rem; font-weight:800; letter-spacing:.17em; text-transform:uppercase; color:var(--accent); }
+    .eyebrow-light { color:#a9baff; }
+    .hero { background:var(--hero); color:#f9fbff; position:relative; overflow:hidden; }
+    .hero::before { position:absolute; content:""; width:600px; height:600px; right:-200px; top:-260px; border:1px solid rgba(171,197,255,.2); border-radius:50%; box-shadow:0 0 0 70px rgba(171,197,255,.03),0 0 0 145px rgba(171,197,255,.03); }
+    .hero-inner { position:relative; z-index:1; padding-block:clamp(65px,7.5vw,112px); }
+    .hero h1 { max-width:730px; line-height:1.05; letter-spacing:-.065em; font-size:clamp(3rem,5.4vw,5.3rem); }
+    .hero h1 em { font-style:normal; color:#adc0ff; }
+    .hero-lead { color:#cad3e5; max-width:600px; font-size:1.04rem; }
+    .btn-brand { background:#758bff; color:#0c1831; border:1px solid #758bff; font-weight:750; }
+    .btn-brand:hover { background:#a5b6ff; border-color:#a5b6ff; color:#091630; }
+    .btn-quiet { color:#fff; border:1px solid #6b7794; }
+    .btn-quiet:hover { color:#111e3d; background:#fff; }
+    .hero-pill { border:1px solid #445578; border-radius:100px; padding:.25rem .75rem; color:#d0daf5; font-size:.77rem; }
+    .pipeline-panel { background:#202d4e; border:1px solid #40547a; border-radius:24px; box-shadow:0 26px 64px rgba(0,0,0,.25); transform:rotate(1deg); }
+    .panel-top { border-bottom:1px solid #40547a; font-size:.73rem; color:#aab9dc; letter-spacing:.11em; }
+    .panel-dot { width:8px; height:8px; background:#64d4b8; border-radius:50%; display:inline-block; }
+    .pipeline-card { background:#2a3b60; color:#f3f6fe; border:1px solid #4d6086; border-radius:12px; padding:16px 8px; text-align:center; min-height:96px; display:flex; flex-direction:column; justify-content:center; }
+    .pipeline-card small { color:#b5c4e9; font-weight:750; letter-spacing:.08em; }
+    .pipeline-arrow { color:#9cb1e9; text-align:center; font-size:1.35rem; align-self:center; }
+    .pipeline-tags { font-size:.76rem; color:#c6d6ff; }
+    .section-pad { padding-block:clamp(64px,6vw,94px); }
+    .section-title { letter-spacing:-.047em; line-height:1.15; font-size:clamp(2rem,3.7vw,3.15rem); font-weight:800; }
+    .muted-copy { color:var(--muted); }
+    .surface-card { background:var(--surface); border:1px solid var(--stroke); border-radius:20px; box-shadow:0 8px 32px rgba(23,39,81,.035); }
+    .fact-row { margin-top:-30px; position:relative; z-index:3; }
+    .fact-item { border-right:1px solid var(--stroke); }
+    .fact-item:last-child { border:0; }
+    .fact-value { font-weight:850; font-size:1.3rem; color:var(--accent); }
+    .about-quote { border-left:4px solid var(--accent); padding-left:1.4rem; font-size:1.17rem; }
+    .skill-choice { border:1px solid var(--stroke); border-radius:13px; text-align:left; padding:16px; background:var(--surface); color:var(--ink); width:100%; min-height:104px; transition:border-color .15s,transform .15s; }
+    .skill-choice strong,.skill-choice span { display:block; }
+    .skill-choice span { color:var(--muted); font-size:.81rem; }
+    .skill-choice:hover { border-color:var(--accent); transform:translateY(-2px); }
+    .skill-choice[aria-pressed="true"] { background:var(--sky); border:2px solid var(--accent); padding:15px; }
+    .skill-detail { min-height:100%; background:var(--hero); color:#eef3ff; border-radius:20px; padding:clamp(26px,3.5vw,45px); display:flex; flex-direction:column; justify-content:space-between; }
+    .skill-detail .kicker { color:#aabcf2; font-size:.75rem; font-weight:850; letter-spacing:.12em; text-transform:uppercase; }
+    .skill-detail h3 { letter-spacing:-.045em; font-weight:800; font-size:clamp(2rem,3.7vw,3rem); }
+    .skill-detail p { color:#c4d0ea; max-width:480px; }
+    .skill-example { border-top:1px solid #455575; padding-top:18px; color:#eaf1ff; }
+    .filter-btn { border-color:var(--stroke); background:var(--surface); color:var(--ink); font-weight:650; border-radius:100px!important; }
+    .filter-btn[aria-pressed="true"] { background:var(--accent); color:var(--paper); border-color:var(--accent); }
+    .project-content { padding:28px; display:flex; flex-direction:column; }
+    .project-card h3 { font-size:1.42rem; font-weight:800; letter-spacing:-.035em; }
+    .project-code { width:52px; height:52px; display:grid; place-items:center; border-radius:14px; background:var(--sky); color:var(--accent); font-size:1.1rem; font-weight:850; }
+    .tech-tag { display:inline-block; border-radius:6px; padding:.2rem .55rem; font-size:.74rem; font-weight:750; background:var(--surface-alt); color:var(--muted); }
+    .weather-band { background:var(--surface-alt); border-top:1px solid var(--stroke); border-bottom:1px solid var(--stroke); }
+    .api-card { padding:clamp(20px,3vw,34px); }
+    .weather-controls { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:end; }
+    .form-control,.form-select { background-color:var(--surface); color:var(--ink); border-color:var(--stroke); }
+    .form-control:focus,.form-select:focus { border-color:var(--accent); box-shadow:0 0 0 .25rem rgba(85,104,219,.17); }
+    .form-label { font-weight:700; }
+    .api-status { font-size:.91rem; color:var(--muted); min-height:1.6rem; margin-top:16px; }
+    .api-status[data-state="error"] { color:#ca4c4c; }
+    .metric { background:var(--surface-alt); border:1px solid var(--stroke); border-radius:13px; padding:14px 10px; text-align:center; }
+    .metric strong { display:block; font-size:clamp(1.15rem,2vw,1.65rem); font-weight:850; color:var(--ink); }
+    .metric span { display:block; font-size:.74rem; color:var(--muted); }
+    .hourly-chart { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:7px; }
+    .forecast-hour { display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0; font-size:.73rem; }
+    .forecast-hour time,.forecast-hour small { font-size:clamp(.58rem,1.7vw,.75rem); color:var(--muted); white-space:nowrap; }
+    .forecast-track { height:92px; width:100%; background:var(--surface-alt); border-radius:8px; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; }
+    .forecast-bar { display:block; width:100%; background:linear-gradient(0deg,#465ed3,#96adff); border-radius:8px 8px 0 0; }
+    .forecast-hour strong { font-size:clamp(.68rem,2vw,.88rem); }
+    .note-small { font-size:.78rem; color:var(--muted); }
+    .accordion { --bs-accordion-bg:var(--surface); --bs-accordion-border-color:var(--stroke); --bs-accordion-color:var(--ink); --bs-accordion-btn-bg:var(--surface); --bs-accordion-btn-color:var(--ink); --bs-accordion-active-bg:var(--sky); --bs-accordion-active-color:var(--ink); }
+    .lab-card { padding:clamp(24px,4vw,43px); }
+    .result-box { border:1px solid var(--accent); background:var(--sky); padding:16px; border-radius:13px; }
+    .result-box strong { color:var(--ink); }
+    .result-box p { color:var(--muted); margin:6px 0 0; }
+    footer { border-top:1px solid var(--stroke); color:var(--muted); }
+    footer a { color:var(--accent); }
+    @media(max-width:575.98px) { .hero h1 { font-size:clamp(2.8rem,11vw,4.1rem); } .hero-inner { padding-block:58px 75px; } .pipeline-panel { transform:none; } .fact-row { margin-top:0; } .fact-item { border-right:0; border-bottom:1px solid var(--stroke); } .fact-item:last-child { border-bottom:0; } .weather-controls { grid-template-columns:1fr; } .weather-controls .btn { width:100%; } .forecast-track { height:66px; } .api-card { padding:18px; } }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation:none!important; transition:none!important; } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <!-- The Bootstrap navbar collapses automatically on smaller screens. -->
+  <header class="site-nav sticky-top">
+    <nav class="navbar navbar-expand-lg py-3" aria-label="Main navigation">
+      <div class="container-xl">
+        <a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold" href="#top"><span class="brand-mark">ab.</span><span>abdul <span class="fw-normal">/ systems lab</span></span></a>
+        <div class="d-flex align-items-center gap-2 order-lg-3">
+          <button class="btn btn-sm theme-btn px-3" type="button" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark theme">◐ Dark</button>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end pe-lg-4 order-lg-2" id="navbarLinks">
+          <ul class="navbar-nav gap-lg-2 pt-3 pt-lg-0">
+            <li class="nav-item"><a class="nav-link" href="#about">Approach</a></li>
+            <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+            <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="#api">Live API</a></li>
+            <li class="nav-item"><a class="nav-link" href="#lab">Lab</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="container-xl hero-inner">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-7">
+            <div class="eyebrow eyebrow-light mb-3">Portfolio / Bootstrap 5 rebuild / 2026</div>
+            <h1 id="hero-title" class="mb-4">Turning everyday problems into <em>useful systems.</em></h1>
+            <p class="hero-lead mb-4">I'm Abdul, studying MSc Computer Science with Data Analytics. I build practical projects with Python, SQL and cloud technologies, and explore how web interfaces make the results easier to use.</p>
+            <div class="d-flex flex-wrap gap-2 mb-4">
+              <a class="btn btn-brand btn-lg px-4" href="#projects">Explore projects ↗</a>
+              <a class="btn btn-quiet btn-lg px-4" href="#api">Try the live API →</a>
+            </div>
+            <div class="d-flex flex-wrap gap-2" aria-label="Core interests"><span class="hero-pill">Python & SQL</span><span class="hero-pill">AWS & cloud</span><span class="hero-pill">Responsive web</span></div>
+          </div>
+          <div class="col-lg-5">
+            <div class="pipeline-panel p-4" role="img" aria-label="Illustration of a data pipeline with collect, transform and use stages">
+              <div class="panel-top d-flex align-items-center justify-content-between pb-3 mb-4"><span>BUILD NOTES / PIPELINE</span><span><i class="panel-dot me-2"></i>DESIGN</span></div>
+              <p class="fw-bold fs-4 lh-sm mb-4">Start with the problem.<br>Then design the flow.</p>
+              <div class="d-grid align-items-center mb-4" style="grid-template-columns:1fr 16px 1fr 16px 1fr;gap:4px" aria-hidden="true">
+                <div class="pipeline-card"><small>01</small><strong>Collect</strong></div><div class="pipeline-arrow">→</div>
+                <div class="pipeline-card"><small>02</small><strong>Transform</strong></div><div class="pipeline-arrow">→</div>
+                <div class="pipeline-card"><small>03</small><strong>Use</strong></div>
+              </div>
+              <div class="d-flex flex-wrap gap-2 pipeline-tags"><span class="border rounded-pill px-3 py-1">Python</span><span class="border rounded-pill px-3 py-1">SQL</span><span class="border rounded-pill px-3 py-1">AWS</span><span class="border rounded-pill px-3 py-1">Automation</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container-xl fact-row" aria-label="Portfolio overview">
+      <div class="surface-card row g-0 overflow-hidden mx-0">
+        <div class="fact-item col-sm-4 px-4 py-3"><div class="fact-value">03</div><div class="small muted-copy">Selected projects</div></div>
+        <div class="fact-item col-sm-4 px-4 py-3"><div class="fact-value">06</div><div class="small muted-copy">Interactive skills</div></div>
+        <div class="fact-item col-sm-4 px-4 py-3"><div class="fact-value">10</div><div class="small muted-copy">Forecast locations</div></div>
+      </div>
+    </div>
+
+    <section id="about" class="section-pad" aria-labelledby="about-title">
+      <div class="container-xl">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-4"><div class="eyebrow mb-2">The approach</div><h2 class="section-title" id="about-title">Useful beats complicated.</h2></div>
+          <div class="col-lg-7 offset-lg-1"><p class="about-quote mb-0">Working in operations has shown me how much time clear processes and reliable information can save. That shapes how I build: understand the problem, simplify the workflow, and make the result easy to use.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section-pad pt-0" aria-labelledby="skills-title">
+      <div class="container-xl">
+        <div class="eyebrow mb-2">01 / Toolset</div><h2 class="section-title mb-3" id="skills-title">What I build with.</h2>
+        <p class="muted-copy mb-4">Choose a technology to see how I use it. JavaScript updates the detail panel in place.</p>
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="row row-cols-2 g-3" role="group" aria-label="Explore technologies">
+              <div class="col"><button type="button" class="skill-choice" data-skill="python" aria-pressed="true"><strong>Python</strong><span>Automation & ETL</span></button></div>
+              <div class="col"><button type="button" class="skill-choice" data-skill="sql" aria-pressed="false"><strong>SQL</strong><span>Querying & modelling</span></button></div>
+              <div class="col"><button type="button" class="skill-choice" data-skill="aws" aria-pressed="false"><strong>AWS</strong><span>Cloud services</span></button></div>
+              <div class="col"><button type="button" class="skill-choice" data-skill="terraform" aria-pressed="false"><strong>Terraform</strong><span>Infrastructure as code</span></button></div>
+              <div class="col"><button type="button" class="skill-choice" data-skill="fastapi" aria-pressed="false"><strong>FastAPI</strong><span>Python APIs</span></button></div>
+              <div class="col"><button type="button" class="skill-choice" data-skill="javascript" aria-pressed="false"><strong>JavaScript</strong><span>Front-end behaviour</span></button></div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <article class="skill-detail" aria-live="polite" aria-atomic="true">
+              <div><div class="kicker mb-3" id="skill-type">Language / Automation</div><h3 id="skill-title">Python</h3><p class="mb-4" id="skill-description">I use Python to clean data, automate repetitive tasks and build reusable pipeline logic.</p></div>
+              <div class="skill-example"><strong>In practice:</strong> <span id="skill-example">Transforming raw files into analysis-ready datasets.</span></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section-pad" aria-labelledby="projects-title">
+      <div class="container-xl">
+        <div class="eyebrow mb-2">02 / Selected work</div><h2 class="section-title mb-3" id="projects-title">Projects with a purpose.</h2>
+        <p class="muted-copy mb-4">Three areas of work, one simple goal: make information more useful.</p>
+        <div class="d-flex flex-wrap gap-2 mb-2" role="group" aria-label="Filter projects">
+          <button type="button" class="btn filter-btn px-3" data-filter="all" aria-pressed="true">All projects</button>
+          <button type="button" class="btn filter-btn px-3" data-filter="pipelines" aria-pressed="false">Data pipelines</button>
+          <button type="button" class="btn filter-btn px-3" data-filter="analytics" aria-pressed="false">Analytics</button>
+          <button type="button" class="btn filter-btn px-3" data-filter="tools" aria-pressed="false">Automation</button>
+        </div>
+        <p class="small muted-copy mb-4" id="project-count" aria-live="polite">Showing 3 projects</p>
+        <div class="row g-3" id="projects-grid">
+          <div class="col-md-6 col-xl-4 project-card" data-category="pipelines"><article class="surface-card project-content h-100"><div class="project-code mb-4">01</div><div class="eyebrow mb-3">Data pipelines</div><h3>Warehouse Intelligence Platform</h3><p class="muted-copy flex-grow-1">A data platform for repeatable ingestion, transformation and cloud data processing.</p><div class="d-flex flex-wrap gap-2"><span class="tech-tag">Python</span><span class="tech-tag">AWS</span><span class="tech-tag">PostgreSQL</span></div></article></div>
+          <div class="col-md-6 col-xl-4 project-card" data-category="analytics"><article class="surface-card project-content h-100"><div class="project-code mb-4">02</div><div class="eyebrow mb-3">Analytics</div><h3>Workforce Analytics Pipeline</h3><p class="muted-copy flex-grow-1">Organising workforce data into cleaner datasets that are easier to analyse and query.</p><div class="d-flex flex-wrap gap-2"><span class="tech-tag">Python</span><span class="tech-tag">SQL</span><span class="tech-tag">Data modelling</span></div></article></div>
+          <div class="col-md-6 col-xl-4 project-card" data-category="tools"><article class="surface-card project-content h-100"><div class="project-code mb-4">03</div><div class="eyebrow mb-3">Automation</div><h3>Operations Insight Tools</h3><p class="muted-copy flex-grow-1">Practical interfaces designed to reduce repetitive checks and speed up decisions.</p><div class="d-flex flex-wrap gap-2"><span class="tech-tag">JavaScript</span><span class="tech-tag">Automation</span><span class="tech-tag">UI</span></div></article></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="api" class="weather-band section-pad" aria-labelledby="api-title">
+      <div class="container-xl">
+        <div class="row g-4 align-items-start">
+          <div class="col-lg-5">
+            <div class="eyebrow mb-2">03 / Public API</div><h2 class="section-title mb-3" id="api-title">Data beyond the browser.</h2>
+            <p class="muted-copy mb-4">The Open-Meteo API returns forecast data in JSON. JavaScript extracts the useful values and updates this page without reloading it. No API key is required.</p>
+            <div class="accordion" id="api-how-it-works">
+              <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#api-process" aria-expanded="true" aria-controls="api-process">How the data flows</button></h3><div id="api-process" class="accordion-collapse collapse show" data-bs-parent="#api-how-it-works"><div class="accordion-body small">1. <code>fetch()</code> requests the forecast.<br>2. JavaScript reads and checks the JSON.<br>3. The page displays temperatures and rain probability.</div></div></div>
+              <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#api-failures" aria-expanded="false" aria-controls="api-failures">What if the API fails?</button></h3><div id="api-failures" class="accordion-collapse collapse" data-bs-parent="#api-how-it-works"><div class="accordion-body small">The button is disabled while loading. A clear status message appears if the response fails or returns unexpected data, so the page remains usable.</div></div></div>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="surface-card api-card">
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4"><h3 class="h4 fw-bold mb-0">Forecast data explorer</h3><span class="badge rounded-pill text-bg-primary">Open-Meteo / JSON</span></div>
+              <div class="weather-controls">
+                <div><label class="form-label" for="api-city">Choose a city</label>
+                  <select class="form-select form-select-lg" id="api-city" name="api-city">
+                    <option value="manchester">Manchester, UK</option><option value="london">London, UK</option><option value="dubai">Dubai, UAE</option><option value="tripoli">Tripoli, Libya</option><option value="kuwaitcity">Kuwait City, Kuwait</option><option value="paris">Paris, France</option><option value="tokyo">Tokyo, Japan</option><option value="washington">Washington, D.C., USA</option><option value="brasilia">Brasília, Brazil</option><option value="canberra">Canberra, Australia</option>
+                  </select>
+                </div>
+                <button class="btn btn-brand btn-lg px-4" type="button" id="api-refresh">Load forecast ↗</button>
+              </div>
+              <p class="api-status mb-3" id="api-status" role="status" aria-live="polite">Choose a city and load the latest forecast.</p>
+              <div id="api-results" hidden>
+                <div class="d-flex flex-wrap justify-content-between align-items-baseline gap-2 mb-3"><h4 class="h5 fw-bold mb-0" id="api-location">Forecast</h4><small class="muted-copy" id="api-observed-time"></small></div>
+                <div class="row g-2 mb-4" aria-label="Current forecast metrics">
+                  <div class="col-4"><div class="metric"><strong id="api-temperature">—</strong><span>Temperature</span></div></div>
+                  <div class="col-4"><div class="metric"><strong id="api-humidity">—</strong><span>Humidity</span></div></div>
+                  <div class="col-4"><div class="metric"><strong id="api-wind">—</strong><span>Wind speed</span></div></div>
+                </div>
+                <h5 class="h6 fw-bold mb-3">Next 6 hours · Temperature and rain chance</h5>
+                <div id="api-hourly" class="hourly-chart" role="group" aria-label="Six-hour forecast"></div>
+              </div>
+              <p class="note-small mt-4 mb-0">Weather model forecasts, not live sensor readings. Source: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>. An internet connection is required.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lab" class="section-pad" aria-labelledby="lab-title">
+      <div class="container-xl">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-6"><div class="eyebrow mb-2">04 / Interactive lab</div><h2 class="section-title mb-3" id="lab-title">Choose a problem. Find a starting point.</h2><p class="muted-copy">This project matcher uses an HTML form, built-in validation and JavaScript event handling. Your answer stays in the browser.</p><div class="d-flex flex-wrap gap-2"><span class="tech-tag">HTML form</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Instant feedback</span></div></div>
+          <div class="col-lg-6">
+            <div class="surface-card lab-card"><h3 class="h4 fw-bold mb-2">Find a project to explore</h3><p class="muted-copy small mb-4">Tell me what you're most interested in.</p>
+              <form id="recommendation-form">
+                <div class="mb-3"><label for="visitor-name" class="form-label">Your name <span class="fw-normal muted-copy">(optional)</span></label><input class="form-control form-control-lg" type="text" id="visitor-name" name="visitor-name" maxlength="36" autocomplete="given-name" placeholder="e.g. Sam"></div>
+                <div class="mb-3"><label for="interest" class="form-label">I'm most interested in...</label><select class="form-select form-select-lg" id="interest" name="interest" required><option value="">Choose an area</option><option value="pipelines">Building cloud data pipelines</option><option value="analytics">Making data easier to analyse</option><option value="tools">Automating everyday tasks</option></select></div>
+                <button type="submit" class="btn btn-brand btn-lg w-100">Get my recommendation →</button>
+              </form>
+              <div class="result-box mt-4" id="recommendation-result" role="status" aria-live="polite" hidden><strong id="recommendation-title"></strong><p id="recommendation-description"></p></div>
+              <p class="note-small mt-3 mb-0">Demo only. Nothing is submitted to a server.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-4"><div class="container-xl d-flex flex-wrap justify-content-between align-items-center gap-2"><small>© 2026 Abdul. Recreated using Bootstrap 5, custom CSS and JavaScript.</small><a href="#top" class="small">Back to top ↑</a></div></footer>
+  <!-- Bootstrap's JS bundle powers navbar collapse and accordion. -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script>
+    "use strict";
+
+    // Theme switch: remember the visitor's choice in this browser.
+    const themeButton = document.getElementById("theme-toggle");
+    let savedTheme = null;
+    try { savedTheme = localStorage.getItem("portfolio-theme"); } catch (error) { /* Storage might be disabled. */ }
+    const preferredDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initialTheme = savedTheme === "dark" || savedTheme === "light"
+      ? savedTheme
+      : (preferredDark ? "dark" : "light");
+
+    function applyTheme(theme) {
+      document.body.dataset.theme = theme;
+      document.documentElement.setAttribute("data-bs-theme", theme);
+      const isDark = theme === "dark";
+      themeButton.setAttribute("aria-pressed", String(isDark));
+      themeButton.setAttribute("aria-label", `Switch to ${isDark ? "light" : "dark"} theme`);
+      themeButton.textContent = isDark ? "☀ Light" : "◐ Dark";
+    }
+    applyTheme(initialTheme);
+    themeButton.addEventListener("click", () => {
+      const nextTheme = document.body.dataset.theme === "dark" ? "light" : "dark";
+      applyTheme(nextTheme);
+      try { localStorage.setItem("portfolio-theme", nextTheme); } catch (error) { /* Theme still works without storage. */ }
+    });
+
+    // Skill explorer: one set of data, updated on every button click.
+    const skills = {
+      python: {
+        type: "Language / Automation", title: "Python",
+        description: "I use Python to clean data, automate repetitive tasks and build reusable pipeline logic.",
+        example: "Transforming raw files into analysis-ready datasets."
+      },
+      sql: {
+        type: "Data / Querying", title: "SQL",
+        description: "SQL helps me organise, join and explore structured data so that it can answer useful questions.",
+        example: "Creating clear queries and data models for analysis."
+      },
+      aws: {
+        type: "Cloud / Data services", title: "Amazon Web Services",
+        description: "I use AWS services when exploring how to store, process and orchestrate data pipelines in the cloud.",
+        example: "Using storage and serverless services within a pipeline design."
+      },
+      terraform: {
+        type: "Infrastructure as code", title: "Terraform",
+        description: "Terraform lets me describe cloud infrastructure as code rather than setting everything up manually.",
+        example: "Defining repeatable cloud resources for a project."
+      },
+      fastapi: {
+        type: "Backend / APIs", title: "FastAPI",
+        description: "FastAPI helps me expose Python functionality through clear, lightweight web API endpoints.",
+        example: "Building endpoints for a data-backed application."
+      },
+      javascript: {
+        type: "Front end / Learning", title: "JavaScript",
+        description: "I'm learning how JavaScript responds to user actions and updates an HTML page without a full reload.",
+        example: "The project filters, theme switch and form on this page."
+      }
+    };
+
+    const skillButtons = document.querySelectorAll(".skill-choice");
+    skillButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const skill = skills[button.dataset.skill];
+        if (!skill) return;
+        skillButtons.forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+        document.getElementById("skill-type").textContent = skill.type;
+        document.getElementById("skill-title").textContent = skill.title;
+        document.getElementById("skill-description").textContent = skill.description;
+        document.getElementById("skill-example").textContent = skill.example;
+      });
+    });
+
+    // Project filters: show relevant cards and update the live result count.
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const projectCards = document.querySelectorAll(".project-card");
+    const projectCount = document.getElementById("project-count");
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const selected = button.dataset.filter;
+        let shown = 0;
+        filterButtons.forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+        projectCards.forEach(card => {
+          const visible = selected === "all" || card.dataset.category === selected;
+          card.hidden = !visible;
+          if (visible) shown++;
+        });
+        projectCount.textContent = `Showing ${shown} ${shown === 1 ? "project" : "projects"}`;
+      });
+    });
+
+    // Week 5: request a public API, validate JSON, and present useful fields.
+    // Fixed locations avoid requiring personal location permissions or API keys.
+    const citySettings = {
+      manchester: { label: "Manchester", latitude: 53.4808, longitude: -2.2426 },
+      london: { label: "London", latitude: 51.5074, longitude: -0.1278 },
+      dubai: { label: "Dubai", latitude: 25.2048, longitude: 55.2708 },
+      tripoli: { label: "Tripoli", latitude: 32.8872, longitude: 13.1913 },
+      kuwaitcity: { label: "Kuwait City", latitude: 29.3759, longitude: 47.9774 },
+      paris: { label: "Paris", latitude: 48.8566, longitude: 2.3522 },
+      tokyo: { label: "Tokyo", latitude: 35.6762, longitude: 139.6503 },
+      washington: { label: "Washington, D.C.", latitude: 38.9072, longitude: -77.0369 },
+      brasilia: { label: "Brasília", latitude: -15.7939, longitude: -47.8828 },
+      canberra: { label: "Canberra", latitude: -35.2809, longitude: 149.1300 }
+    };
+    const citySelect = document.getElementById("api-city");
+    const loadButton = document.getElementById("api-refresh");
+    const apiStatus = document.getElementById("api-status");
+    const apiResults = document.getElementById("api-results");
+    const hourlyContainer = document.getElementById("api-hourly");
+
+    function displayNumber(value, unit = "") {
+      return Number.isFinite(value) ? `${Math.round(value)}${unit}` : "Not available";
+    }
+
+    function renderForecast(data, location) {
+      const current = data.current;
+      const hourly = data.hourly;
+      if (!current || !hourly || !Array.isArray(hourly.time)
+          || !Array.isArray(hourly.temperature_2m)
+          || !Array.isArray(hourly.precipitation_probability)) {
+        throw new Error("The API returned unexpected data.");
+      }
+
+      const hours = hourly.time.slice(0, 6).map((time, index) => ({
+        time,
+        temperature: hourly.temperature_2m[index],
+        rainChance: hourly.precipitation_probability[index]
+      }));
+      if (hours.length !== 6 || hours.some(hour => !Number.isFinite(hour.temperature))) {
+        throw new Error("There isn't enough forecast data to display.");
+      }
+      document.getElementById("api-location").textContent = location.label;
+      document.getElementById("api-observed-time").textContent =
+        `Model time: ${current.time ? current.time.replace("T", " ") : "unavailable"} (local)`;
+      document.getElementById("api-temperature").textContent = displayNumber(current.temperature_2m, "°C");
+      document.getElementById("api-humidity").textContent = displayNumber(current.relative_humidity_2m, "%");
+      document.getElementById("api-wind").textContent = displayNumber(current.wind_speed_10m, " km/h");
+      hourlyContainer.replaceChildren();
+      const temps = hours.map(hour => hour.temperature);
+      const lowest = Math.min(...temps);
+      const range = Math.max(...temps) - lowest || 1;
+      hours.forEach(hour => {
+        const item = document.createElement("div");
+        item.className = "forecast-hour";
+        const time = document.createElement("time");
+        time.dateTime = hour.time;
+        time.textContent = hour.time.slice(11, 16);
+        const barTrack = document.createElement("div");
+        barTrack.className = "forecast-track";
+        const bar = document.createElement("span");
+        bar.className = "forecast-bar";
+        bar.style.height = `${20 + ((hour.temperature - lowest) / range) * 80}%`;
+        bar.setAttribute("aria-hidden", "true");
+        barTrack.append(bar);
+        const temperature = document.createElement("strong");
+        temperature.textContent = displayNumber(hour.temperature, "°C");
+        const rainChance = document.createElement("small");
+        rainChance.textContent = `${displayNumber(hour.rainChance, "%")} rain`;
+        item.append(time, barTrack, temperature, rainChance);
+        hourlyContainer.append(item);
+      });
+      apiResults.hidden = false;
+    }
+
+    async function loadForecast() {
+      const location = citySettings[citySelect.value];
+      if (!location) return;
+      loadButton.disabled = true;
+      apiStatus.dataset.state = "loading";
+      apiStatus.textContent = `Loading ${location.label} forecast...`;
+      apiResults.hidden = true;
+
+      // Open-Meteo returns forecast-hour timestamps in the selected city's local timezone.
+      const params = new URLSearchParams({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        current: "temperature_2m,relative_humidity_2m,wind_speed_10m",
+        hourly: "temperature_2m,precipitation_probability",
+        forecast_hours: "6",
+        timezone: "auto"
+      });
+      try {
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+        if (!response.ok) throw new Error(`API error (${response.status}).`);
+        const data = await response.json();
+        renderForecast(data, location);
+        apiStatus.dataset.state = "ready";
+        apiStatus.textContent = `Forecast loaded for ${location.label}.`;
+      } catch (error) {
+        apiStatus.dataset.state = "error";
+        apiStatus.textContent = "Unable to load forecast. Check your connection and try again.";
+        console.error("Forecast request failed:", error);
+      } finally {
+        loadButton.disabled = false;
+      }
+    }
+    loadButton.addEventListener("click", loadForecast);
+    citySelect.addEventListener("change", () => {
+      apiResults.hidden = true;
+      apiStatus.dataset.state = "idle";
+      apiStatus.textContent = `Ready to load the forecast for ${citySettings[citySelect.value].label}.`;
+    });
+    // Initial load intentionally user-initiated, making the API interaction easy to observe.
+
+    // Interactive form: validates a choice, then recommends an actual project.
+    const recommendations = {
+      pipelines: {
+        title: "Warehouse Intelligence Platform",
+        description: "Start here if you're interested in cloud ingestion, transformation and building reliable data flows."
+      },
+      analytics: {
+        title: "Workforce Analytics Pipeline",
+        description: "A good match if you want to turn raw records into clear, queryable information."
+      },
+      tools: {
+        title: "Operations Insight Tools",
+        description: "Explore this if you're keen on simplifying routine work with small, practical applications."
+      }
+    };
+    const form = document.getElementById("recommendation-form");
+    const output = document.getElementById("recommendation-result");
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const choice = document.getElementById("interest").value;
+      const match = recommendations[choice];
+      if (!match) return;
+      const name = document.getElementById("visitor-name").value.trim();
+      document.getElementById("recommendation-title").textContent =
+        `${name ? `${name}, your` : "Your"} project match: ${match.title}`;
+      document.getElementById("recommendation-description").textContent = match.description;
+      output.hidden = false;
+    });
+  </script>
+</body>
+</html>
