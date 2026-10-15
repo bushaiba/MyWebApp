@@ -411,9 +411,16 @@
             <div>
               <label for="api-city">Choose a city</label>
               <select id="api-city" name="api-city">
-                <option value="manchester">Manchester</option>
-                <option value="london">London</option>
-                <option value="dubai">Dubai</option>
+                <option value="manchester">Manchester, UK</option>
+                <option value="london">London, UK</option>
+                <option value="dubai">Dubai, UAE</option>
+                <option value="tripoli">Tripoli, Libya</option>
+                <option value="kuwaitcity">Kuwait City, Kuwait</option>
+                <option value="paris">Paris, France</option>
+                <option value="tokyo">Tokyo, Japan</option>
+                <option value="washington">Washington, D.C., USA</option>
+                <option value="brasilia">Brasília, Brazil</option>
+                <option value="canberra">Canberra, Australia</option>
               </select>
             </div>
             <button type="button" class="button button-primary" id="api-refresh">Load forecast <span aria-hidden="true">↗</span></button>
@@ -577,7 +584,14 @@
     const citySettings = {
       manchester: { label: "Manchester", latitude: 53.4808, longitude: -2.2426 },
       london: { label: "London", latitude: 51.5074, longitude: -0.1278 },
-      dubai: { label: "Dubai", latitude: 25.2048, longitude: 55.2708 }
+      dubai: { label: "Dubai", latitude: 25.2048, longitude: 55.2708 },
+      tripoli: { label: "Tripoli", latitude: 32.8872, longitude: 13.1913 },
+      kuwaitcity: { label: "Kuwait City", latitude: 29.3759, longitude: 47.9774 },
+      paris: { label: "Paris", latitude: 48.8566, longitude: 2.3522 },
+      tokyo: { label: "Tokyo", latitude: 35.6762, longitude: 139.6503 },
+      washington: { label: "Washington, D.C.", latitude: 38.9072, longitude: -77.0369 },
+      brasilia: { label: "Brasília", latitude: -15.7939, longitude: -47.8828 },
+      canberra: { label: "Canberra", latitude: -35.2809, longitude: 149.1300 }
     };
     const citySelect = document.getElementById("api-city");
     const loadButton = document.getElementById("api-refresh");
@@ -672,6 +686,11 @@
       }
     }
     loadButton.addEventListener("click", loadForecast);
+    citySelect.addEventListener("change", () => {
+      apiResults.hidden = true;
+      apiStatus.dataset.state = "idle";
+      apiStatus.textContent = `Ready to load the forecast for ${citySettings[citySelect.value].label}.`;
+    });
     // Initial load intentionally user-initiated, making the API interaction easy to observe.
 
     // Interactive form: validates a choice, then recommends an actual project.
